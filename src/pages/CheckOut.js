@@ -3,6 +3,11 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ProductContext } from "../context/ProductContext";
 
+const config = {
+  style: "currency",
+  currency: "VND",
+  maximumFractionDigits: 9,
+};
 const CheckOut = () => {
   const { products, setProducts, setAmount } = useContext(ProductContext);
 
@@ -12,7 +17,11 @@ const CheckOut = () => {
       0
     );
 
-    return Math.round(result * 100) / 100;
+    // return Math.round(result * 100) / 100;
+
+    const formated = new Intl.NumberFormat("vi-VN", config).format(result);
+
+    return formated;
   }, [products]);
 
   const handleDelete = (item) => {
@@ -88,7 +97,9 @@ const CheckOut = () => {
                         </span>
                       </td>
                       <td>
-                        $ {Math.round(item.price * item.quantity * 100) / 100}
+                        {new Intl.NumberFormat("vi-VN", config).format(
+                          item.price * item.quantity
+                        )}
                       </td>
                       <td>
                         <i
